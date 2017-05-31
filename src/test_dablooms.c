@@ -279,6 +279,8 @@ int test_scaling_accuracy(const char *bloom_file, const char *words_file)
     }
     
     for (i = 0; fgets(word, sizeof(word), fp); i++) {
+        scaling_bloom_add(bloom, "WORD", strlen("WORD"), i);
+
         if (i % 2 == 0) {
             chomp_line(word);
             scaling_bloom_add(bloom, word, strlen(word), i);

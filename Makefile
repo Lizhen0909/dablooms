@@ -157,35 +157,3 @@ clean:
 
 .PHONY: all clean help install test libdablooms install_libdablooms
 
-
-### pydablooms ###
-
-PYTHON = python
-PY_BLDDIR = $(BLDDIR)/python
-PY_MOD_DIR_ARG = # optional: --user or --system
-PY_MOD_DIR := $(shell $(PYTHON) pydablooms/modpath.py $(PY_MOD_DIR_ARG))
-PY_FLAGS = --build-lib=$(PY_BLDDIR) --build-temp=$(PY_BLDDIR)
-PY_BLD_ENV = BLDDIR="$(BLDDIR)"
-
-pydablooms: $(PY_BLDDIR)/pydablooms.so
-
-install_pydablooms: $(DESTDIR)$(PY_MOD_DIR)/pydablooms.so
-
-$(DESTDIR)$(PY_MOD_DIR)/pydablooms.so: $(PY_BLDDIR)/pydablooms.so
-	@echo " PY_INSTALL " $@
-	@$(INSTALL) -d $(dir $@)
-	@$(INSTALL) $< $@
-
-$(PY_BLDDIR)/pydablooms.so: pydablooms/pydablooms.c src/dablooms.c src/murmur.c
-	@echo " PY_BUILD" $@
-	@$(PY_BLD_ENV) $(PYTHON) pydablooms/setup.py build $(PY_FLAGS) >/dev/null
-
-test_pydablooms: pydablooms
-	@PYTHONPATH=$(PY_BLDDIR) $(PYTHON) pydablooms/test_pydablooms.py $(BLDDIR)/testbloom_py.bin $(WORDS)
-
-clean: clean_pydablooms
-clean_pydablooms:
-	rm -f $(BLDDIR)/pydablooms.so $(BLDDIR)/testbloom_py.bin
-	$(PYTHON) pydablooms/setup.py clean $(PY_FLAGS)
-
-.PHONY: pydablooms install_pydablooms test_pydablooms clean_pydablooms

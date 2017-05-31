@@ -8,6 +8,12 @@
 const char *dablooms_version(void);
 
 typedef struct {
+    size_t size;
+    char  *array;
+} bytearray_t;
+
+
+typedef struct {
     size_t bytes;
     int    fd;
     char  *array;
@@ -75,6 +81,11 @@ long  scaling_bloom_count(scaling_bloom_t *bloom);
 int scaling_bloom_add(scaling_bloom_t *bloom, const char *s, size_t len, uint64_t id);
 int scaling_bloom_remove(scaling_bloom_t *bloom, const char *s, size_t len, uint64_t id);
 int scaling_bloom_check(scaling_bloom_t *bloom, const char *s, size_t len);
+
+int scaling_bloom_add_bytes(scaling_bloom_t *bloom, bytearray_t a, uint64_t id);
+int scaling_bloom_remove_bytes(scaling_bloom_t *bloom, bytearray_t a, uint64_t id);
+int scaling_bloom_check_bytes(scaling_bloom_t *bloom, bytearray_t a);
+
 int scaling_bloom_flush(scaling_bloom_t *bloom);
 uint64_t scaling_bloom_mem_seqnum(scaling_bloom_t *bloom);
 uint64_t scaling_bloom_disk_seqnum(scaling_bloom_t *bloom);

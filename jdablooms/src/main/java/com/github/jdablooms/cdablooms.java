@@ -103,6 +103,18 @@ public class cdablooms {
     return cdabloomsJNI.scaling_bloom_check(scaling_bloom_t.getCPtr(bloom), bloom, s, len);
   }
 
+  public static int scaling_bloom_add_bytes(scaling_bloom_t bloom, byte[] a, long id) {
+    return cdabloomsJNI.scaling_bloom_add_bytes(scaling_bloom_t.getCPtr(bloom), bloom, a, id);
+  }
+
+  public static int scaling_bloom_remove_bytes(scaling_bloom_t bloom, byte[] a, long id) {
+    return cdabloomsJNI.scaling_bloom_remove_bytes(scaling_bloom_t.getCPtr(bloom), bloom, a, id);
+  }
+
+  public static int scaling_bloom_check_bytes(scaling_bloom_t bloom, byte[] a) {
+    return cdabloomsJNI.scaling_bloom_check_bytes(scaling_bloom_t.getCPtr(bloom), bloom, a);
+  }
+
   public static int scaling_bloom_flush(scaling_bloom_t bloom) {
     return cdabloomsJNI.scaling_bloom_flush(scaling_bloom_t.getCPtr(bloom), bloom);
   }

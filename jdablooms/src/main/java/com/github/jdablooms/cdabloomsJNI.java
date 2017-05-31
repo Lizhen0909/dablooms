@@ -11,6 +11,12 @@ package com.github.jdablooms;
 public class cdabloomsJNI {
   public final static native void MurmurHash3_x64_128(long jarg1, int jarg2, long jarg3, long jarg4);
   public final static native String dablooms_version();
+  public final static native void bytearray_t_size_set(long jarg1, bytearray_t jarg1_, long jarg2);
+  public final static native long bytearray_t_size_get(long jarg1, bytearray_t jarg1_);
+  public final static native void bytearray_t_array_set(long jarg1, bytearray_t jarg1_, String jarg2);
+  public final static native String bytearray_t_array_get(long jarg1, bytearray_t jarg1_);
+  public final static native long new_bytearray_t();
+  public final static native void delete_bytearray_t(long jarg1);
   public final static native void bitmap_t_bytes_set(long jarg1, bitmap_t jarg1_, long jarg2);
   public final static native long bitmap_t_bytes_get(long jarg1, bitmap_t jarg1_);
   public final static native void bitmap_t_fd_set(long jarg1, bitmap_t jarg1_, int jarg2);
@@ -95,6 +101,9 @@ public class cdabloomsJNI {
   public final static native int scaling_bloom_add(long jarg1, scaling_bloom_t jarg1_, String jarg2, long jarg3, long jarg4);
   public final static native int scaling_bloom_remove(long jarg1, scaling_bloom_t jarg1_, String jarg2, long jarg3, long jarg4);
   public final static native int scaling_bloom_check(long jarg1, scaling_bloom_t jarg1_, String jarg2, long jarg3);
+  public final static native int scaling_bloom_add_bytes(long jarg1, scaling_bloom_t jarg1_, byte[] jarg2, long jarg3);
+  public final static native int scaling_bloom_remove_bytes(long jarg1, scaling_bloom_t jarg1_, byte[] jarg2, long jarg3);
+  public final static native int scaling_bloom_check_bytes(long jarg1, scaling_bloom_t jarg1_, byte[] jarg2);
   public final static native int scaling_bloom_flush(long jarg1, scaling_bloom_t jarg1_);
   public final static native long scaling_bloom_mem_seqnum(long jarg1, scaling_bloom_t jarg1_);
   public final static native long scaling_bloom_disk_seqnum(long jarg1, scaling_bloom_t jarg1_);

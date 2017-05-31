@@ -243,6 +243,97 @@ SWIGEXPORT jstring JNICALL Java_com_github_jdablooms_cdabloomsJNI_dablooms_1vers
 }
 
 
+SWIGEXPORT void JNICALL Java_com_github_jdablooms_cdabloomsJNI_bytearray_1t_1size_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
+  bytearray_t *arg1 = (bytearray_t *) 0 ;
+  size_t arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(bytearray_t **)&jarg1; 
+  arg2 = (size_t)jarg2; 
+  if (arg1) (arg1)->size = arg2;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_com_github_jdablooms_cdabloomsJNI_bytearray_1t_1size_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  bytearray_t *arg1 = (bytearray_t *) 0 ;
+  size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(bytearray_t **)&jarg1; 
+  result =  ((arg1)->size);
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_com_github_jdablooms_cdabloomsJNI_bytearray_1t_1array_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  bytearray_t *arg1 = (bytearray_t *) 0 ;
+  char *arg2 = (char *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(bytearray_t **)&jarg1; 
+  arg2 = 0;
+  if (jarg2) {
+    arg2 = (char *)(*jenv)->GetStringUTFChars(jenv, jarg2, 0);
+    if (!arg2) return ;
+  }
+  {
+    free(arg1->array);
+    if (arg2) {
+      arg1->array = (char *) malloc(strlen((const char *)arg2)+1);
+      strcpy((char *)arg1->array, (const char *)arg2);
+    } else {
+      arg1->array = 0;
+    }
+  }
+  if (arg2) (*jenv)->ReleaseStringUTFChars(jenv, jarg2, (const char *)arg2);
+}
+
+
+SWIGEXPORT jstring JNICALL Java_com_github_jdablooms_cdabloomsJNI_bytearray_1t_1array_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  bytearray_t *arg1 = (bytearray_t *) 0 ;
+  char *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(bytearray_t **)&jarg1; 
+  result = (char *) ((arg1)->array);
+  if (result) jresult = (*jenv)->NewStringUTF(jenv, (const char *)result);
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_com_github_jdablooms_cdabloomsJNI_new_1bytearray_1t(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  bytearray_t *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (bytearray_t *)calloc(1, sizeof(bytearray_t));
+  *(bytearray_t **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_com_github_jdablooms_cdabloomsJNI_delete_1bytearray_1t(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  bytearray_t *arg1 = (bytearray_t *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(bytearray_t **)&jarg1; 
+  free((char *) arg1);
+}
+
+
 SWIGEXPORT void JNICALL Java_com_github_jdablooms_cdabloomsJNI_bitmap_1t_1bytes_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   bitmap_t *arg1 = (bitmap_t *) 0 ;
   size_t arg2 ;
@@ -1525,6 +1616,91 @@ SWIGEXPORT jint JNICALL Java_com_github_jdablooms_cdabloomsJNI_scaling_1bloom_1c
   result = (int)scaling_bloom_check(arg1,(char const *)arg2,arg3);
   jresult = (jint)result; 
   if (arg2) (*jenv)->ReleaseStringUTFChars(jenv, jarg2, (const char *)arg2);
+  return jresult;
+}
+
+
+SWIGEXPORT jint JNICALL Java_com_github_jdablooms_cdabloomsJNI_scaling_1bloom_1add_1bytes(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jbyteArray jarg2, jlong jarg3) {
+  jint jresult = 0 ;
+  scaling_bloom_t *arg1 = (scaling_bloom_t *) 0 ;
+  bytearray_t arg2 ;
+  uint64_t arg3 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(scaling_bloom_t **)&jarg1; 
+  {
+    char* a = (*jenv)->GetByteArrayElements(jenv, jarg2, NULL);
+    const size_t sz = (*jenv)->GetArrayLength(jenv, jarg2);
+    arg2 = (bytearray_t) {
+      sz,a
+    };
+  }
+  arg3 = (uint64_t)jarg3; 
+  result = (int)scaling_bloom_add_bytes(arg1,arg2,arg3);
+  jresult = (jint)result; 
+  {
+    // Or use  0 instead of ABORT to keep changes if it was a copy
+    (*jenv)->ReleaseByteArrayElements(jenv, jarg2, (&arg2)->array, JNI_ABORT);
+  }
+  return jresult;
+}
+
+
+SWIGEXPORT jint JNICALL Java_com_github_jdablooms_cdabloomsJNI_scaling_1bloom_1remove_1bytes(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jbyteArray jarg2, jlong jarg3) {
+  jint jresult = 0 ;
+  scaling_bloom_t *arg1 = (scaling_bloom_t *) 0 ;
+  bytearray_t arg2 ;
+  uint64_t arg3 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(scaling_bloom_t **)&jarg1; 
+  {
+    char* a = (*jenv)->GetByteArrayElements(jenv, jarg2, NULL);
+    const size_t sz = (*jenv)->GetArrayLength(jenv, jarg2);
+    arg2 = (bytearray_t) {
+      sz,a
+    };
+  }
+  arg3 = (uint64_t)jarg3; 
+  result = (int)scaling_bloom_remove_bytes(arg1,arg2,arg3);
+  jresult = (jint)result; 
+  {
+    // Or use  0 instead of ABORT to keep changes if it was a copy
+    (*jenv)->ReleaseByteArrayElements(jenv, jarg2, (&arg2)->array, JNI_ABORT);
+  }
+  return jresult;
+}
+
+
+SWIGEXPORT jint JNICALL Java_com_github_jdablooms_cdabloomsJNI_scaling_1bloom_1check_1bytes(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jbyteArray jarg2) {
+  jint jresult = 0 ;
+  scaling_bloom_t *arg1 = (scaling_bloom_t *) 0 ;
+  bytearray_t arg2 ;
+  int result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(scaling_bloom_t **)&jarg1; 
+  {
+    char* a = (*jenv)->GetByteArrayElements(jenv, jarg2, NULL);
+    const size_t sz = (*jenv)->GetArrayLength(jenv, jarg2);
+    arg2 = (bytearray_t) {
+      sz,a
+    };
+  }
+  result = (int)scaling_bloom_check_bytes(arg1,arg2);
+  jresult = (jint)result; 
+  {
+    // Or use  0 instead of ABORT to keep changes if it was a copy
+    (*jenv)->ReleaseByteArrayElements(jenv, jarg2, (&arg2)->array, JNI_ABORT);
+  }
   return jresult;
 }
 

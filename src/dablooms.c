@@ -123,7 +123,7 @@ int bitmap_increment(bitmap_t *bitmap, unsigned int index, long offset)
     }
     
     if (temp == 0x0f) {
-        fprintf(stderr, "Error, 4 bit int Overflow\n");
+        //fprintf(stderr, "Error, 4 bit int Overflow\n");
         return -1;
     }
     
@@ -444,6 +444,18 @@ int scaling_bloom_add(scaling_bloom_t *bloom, const char *s, size_t len, uint64_
     bloom->header->mem_seqnum = seqnum + 1;
     
     return 1;
+}
+
+
+int scaling_bloom_add_bytes(scaling_bloom_t *bloom, bytearray_t a, uint64_t id){
+	return scaling_bloom_add(bloom,a.array,a.size,id);
+}
+int scaling_bloom_remove_bytes(scaling_bloom_t *bloom, bytearray_t a, uint64_t id){
+	return scaling_bloom_remove(bloom,a.array,a.size,id);
+}
+
+int scaling_bloom_check_bytes(scaling_bloom_t *bloom, bytearray_t a){
+	return scaling_bloom_check(bloom,a.array,a.size);
 }
 
 int scaling_bloom_remove(scaling_bloom_t *bloom, const char *s, size_t len, uint64_t id)

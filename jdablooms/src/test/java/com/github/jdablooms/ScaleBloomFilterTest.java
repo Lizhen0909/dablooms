@@ -25,28 +25,58 @@ public class ScaleBloomFilterTest {
 	}
 
 	@Test
-	public void test() {
+	public void testString() {
 		String[] words = TEXT.split("\\W+");
 		ScaleBloomFilter bf = new ScaleBloomFilter(CAPACITY, ERROR_RATE);
 
 		for (int i = 0; i < words.length; i++) {
 			if (i % 5 == 0) {
-				bf.add(words[i]);
+				bf.put(words[i]);
 			}
+		}
+		for (int i = 0; i < 20; i++) {
+			bf.put("WQRD");
 		}
 
 		int bad = 0;
 		for (int i = 0; i < words.length; i++) {
 			if (i % 5 == 0) {
-				assertEquals(true, bf.check(words[i]));
+				assertEquals(true, bf.mightContain(words[i]));
 			} else {
-				if (bf.check(words[i])) {
+				if (bf.mightContain(words[i])) {
 					bad += 1;
 				}
 			}
 		}
 		System.out.println("False positive rate is  " + (1.0 * bad / words.length));
 		System.out.println("#words= " + words.length);
+		System.out.println("Count= " + bf.count());
+		bf.close();
+	}
+
+	@Test
+	public void testBytes() {
+		String[] awords = TEXT.split("\\W+");
+		ScaleBloomFilter bf = new ScaleBloomFilter(CAPACITY, ERROR_RATE);
+
+		for (int i = 0; i < awords.length; i++) {
+			if (i % 5 == 0) {
+				bf.put(awords[i].getBytes());
+			}
+		}
+	 
+		int bad = 0;
+		for (int i = 0; i < awords.length; i++) {
+			if (i % 5 == 0) {
+				assertEquals(true, bf.mightContain(awords[i].getBytes()));
+			} else {
+				if (bf.mightContain(awords[i].getBytes())) {
+					bad += 1;
+				}
+			}
+		}
+		System.out.println("False positive rate is  " + (1.0 * bad / awords.length));
+		System.out.println("#words= " + awords.length);
 		System.out.println("Count= " + bf.count());
 		bf.close();
 	}

@@ -11,15 +11,17 @@ import java.util.UUID;
 public class ScaleBloomFilter {
 	private scaling_bloom_t filter;
 	private long count = 0;
+	private String filename;
 
 	public ScaleBloomFilter(long expectedElements, double falsePositiveRate) {
 		ScaleBloomFilter.load_native();
-		String filename = System.getProperty("java.io.tmpdir") + "/scale_bloom_" + UUID.randomUUID().toString();
+		this.filename = System.getProperty("java.io.tmpdir") + "/scale_bloom_" + UUID.randomUUID().toString();
 		this.filter = cdablooms.new_scaling_bloom(expectedElements, falsePositiveRate, filename);
 	}
 
 	public void close() {
 		cdablooms.free_scaling_bloom(filter);
+		new File(this.filename).delete();
 	}
 
 	public static void loadLibraryFromJar(String path) throws IOException {
@@ -82,6 +84,7 @@ public class ScaleBloomFilter {
 
 		// Finally, load the library
 		System.load(temp.getAbsolutePath());
+		new File(temp.getAbsolutePath()).delete();
 	}
 
 	public static void load_native() {
@@ -92,21 +95,34 @@ public class ScaleBloomFilter {
 		}
 	}
 
-	public void add(String w) {
+	public void put(String w) {
 		count += 1;
 		cdablooms.scaling_bloom_add(filter, w, w.length(), count);
 
 	}
 
-	public boolean mightContains(String w) {
+	public boolean mightContain(String w) {
 		return cdablooms.scaling_bloom_check(filter, w, w.length()) > 0;
 
 	}
-	public long count(){
-		 return cdablooms.scaling_bloom_count(filter);
- 	}
+
+	public void put(byte[] w) {
+		count += 1;
+		cdablooms.scaling_bloom_add_bytes(filter, w, count);
+
+	}
+
+	public boolean mightContain(byte[] w) {
+		return cdablooms.scaling_bloom_check_bytes(filter, w) > 0;
+
+	}
+
+	public long count() {
+		return cdablooms.scaling_bloom_count(filter);
+	}
+
 	public boolean check(String w) {
-		return mightContains(w);
+		return mightContain(w);
 
 	}
 
