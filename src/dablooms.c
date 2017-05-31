@@ -404,6 +404,18 @@ uint64_t scaling_bloom_clear_seqnums(scaling_bloom_t *bloom)
     return seqnum;
 }
 
+long  scaling_bloom_count(scaling_bloom_t *bloom)
+{
+    int i;
+    long n =0;
+    counting_bloom_t *cur_bloom = NULL;
+     for (i = bloom->num_blooms - 1; i >= 0; i--) {
+        cur_bloom = bloom->blooms[i];
+	n+=cur_bloom->header->count;
+    }
+   return n;
+}
+
 int scaling_bloom_add(scaling_bloom_t *bloom, const char *s, size_t len, uint64_t id)
 {
     int i;

@@ -76,6 +76,8 @@ OBJS_TESTS = $(patsubst %.c, $(BLDDIR)/%.o, $(SRCS_TESTS))
 LIB_SYMLNKS = libdablooms.$(SO_NAME) libdablooms.$(SO_EXT_MAJOR)
 LIB_FILES = libdablooms.a libdablooms.$(SO_EXT) $(LIB_SYMLNKS)
 
+JNIFLAGS= -I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/linux
+
 # for tests
 WORDS = /usr/share/dict/words
 
@@ -96,14 +98,14 @@ install_libdablooms: $(patsubst %, $(DESTDIR)$(libdir)/%, $(LIB_FILES)) $(DESTDI
 
 $(DESTDIR)$(libdir)/libdablooms.a: $(BLDDIR)/libdablooms.a
 
-$(DESTDIR)$(libdir)/libdablooms.$(SO_EXT): $(BLDDIR)/libdablooms.$(SO_EXT)
+$(DESTDIR)$(libdir)/libdablooms.$(SO_EXT): $(BLDDIR)/libdablooms.so
 
 $(patsubst %, $(DESTDIR)$(libdir)/%, $(LIB_SYMLNKS)): %: $(DESTDIR)$(libdir)/libdablooms.$(SO_EXT)
 	@echo " SYMLNK " $@
 	@$(INSTALL) -d $(dir $@)
 	@ln -fs $(notdir $<) $@
 
-$(DESTDIR)$(includedir)/dablooms.h: src/dablooms.h
+$(DESTDIR)$(includedir)/dablooms.h: src/dablooms.h 
 
 $(DESTDIR)$(prefix)/%:
 	@echo " INSTALL " $@
@@ -124,6 +126,7 @@ $(BLDDIR)/libdablooms.$(SO_EXT): $(OBJS_LIBDABLOOMS)
 	@echo " SO " $@
 	@$(CC) -o $@ $(ALL_CFLAGS) $(SHARED_LDFLAGS) $(ALL_LDFLAGS) $^
 
+
 $(patsubst %, $(BLDDIR)/%, $(LIB_SYMLNKS)): %: $(BLDDIR)/libdablooms.$(SO_EXT)
 	@echo " SYMLNK " $@
 	@mkdir -p $(dir $@)
@@ -139,11 +142,21 @@ test: $(BLDDIR)/test_dablooms
 help:
 	@printf $(HELPTEXT)
 
+jni: $(BLDDIR)/libdablooms_jni.so
+$(BLDDIR)/libdablooms_jni.so: $(OBJS_LIBDABLOOMS)  src/dablooms_wrap.c
+	@echo " SO " $@
+	@$(CC) -o $@ $(JNIFLAGS) $(ALL_CFLAGS) $(SHARED_LDFLAGS) $(ALL_LDFLAGS) $^
+	cp build/libdablooms_jni.so jdablooms/src/main/resources/native/
+
+src/dablooms_wrap.c: dablooms.i
+	swig -package com.github.jdablooms -outdir jdablooms/src/main/java/com/github/jdablooms -Isrc   -o src/dablooms_wrap.c -java dablooms.i 
+
 clean:
-	rm -f $(DEPS) $(OBJS_LIBDABLOOMS) $(patsubst %, $(BLDDIR)/%, $(LIB_FILES)) $(OBJS_TESTS) $(BLDDIR)/test_dablooms $(BLDDIR)/testbloom.bin
-	rmdir $(BLDDIR)
+	rm -f $(DEPS) $(OBJS_LIBDABLOOMS) $(patsubst %, $(BLDDIR)/%, $(LIB_FILES)) $(OBJS_TESTS) $(BLDDIR)/test_dablooms $(BLDDIR)/testbloom.bin src/dablooms_wrap.c
+	rm -fr $(BLDDIR)
 
 .PHONY: all clean help install test libdablooms install_libdablooms
+
 
 ### pydablooms ###
 
