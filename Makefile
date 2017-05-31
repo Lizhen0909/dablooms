@@ -37,7 +37,7 @@ DESTDIR =
 BLDDIR = build
 
 CFLAGS = -g -Wall -O2
-LDFLAGS =
+LDFLAGS = 
 ALL_CFLAGS = -fPIC $(CFLAGS)
 ALL_LDFLAGS = -lm $(LDFLAGS)
 
@@ -131,7 +131,7 @@ $(patsubst %, $(BLDDIR)/%, $(LIB_SYMLNKS)): %: $(BLDDIR)/libdablooms.$(SO_EXT)
 
 $(BLDDIR)/test_dablooms: $(OBJS_TESTS) $(BLDDIR)/libdablooms.a
 	@echo " LD " $@
-	@$(CC) -o $@ $(ALL_CFLAGS) $(ALL_LDFLAGS) $(OBJS_TESTS) $(BLDDIR)/libdablooms.a
+	@$(CC) -o $@ $(ALL_CFLAGS) $(ALL_LDFLAGS) $(OBJS_TESTS) $(BLDDIR)/libdablooms.a -lm
 
 test: $(BLDDIR)/test_dablooms
 	@$(BLDDIR)/test_dablooms $(BLDDIR)/testbloom.bin $(WORDS)
