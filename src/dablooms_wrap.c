@@ -362,34 +362,6 @@ SWIGEXPORT jlong JNICALL Java_com_github_jdablooms_cdabloomsJNI_bitmap_1t_1bytes
 }
 
 
-SWIGEXPORT void JNICALL Java_com_github_jdablooms_cdabloomsJNI_bitmap_1t_1fd_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
-  bitmap_t *arg1 = (bitmap_t *) 0 ;
-  int arg2 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(bitmap_t **)&jarg1; 
-  arg2 = (int)jarg2; 
-  if (arg1) (arg1)->fd = arg2;
-}
-
-
-SWIGEXPORT jint JNICALL Java_com_github_jdablooms_cdabloomsJNI_bitmap_1t_1fd_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jint jresult = 0 ;
-  bitmap_t *arg1 = (bitmap_t *) 0 ;
-  int result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(bitmap_t **)&jarg1; 
-  result = (int) ((arg1)->fd);
-  jresult = (jint)result; 
-  return jresult;
-}
-
-
 SWIGEXPORT void JNICALL Java_com_github_jdablooms_cdabloomsJNI_bitmap_1t_1array_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   bitmap_t *arg1 = (bitmap_t *) 0 ;
   char *arg2 = (char *) 0 ;
@@ -472,17 +444,15 @@ SWIGEXPORT jlong JNICALL Java_com_github_jdablooms_cdabloomsJNI_bitmap_1resize(J
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_github_jdablooms_cdabloomsJNI_new_1bitmap(JNIEnv *jenv, jclass jcls, jint jarg1, jlong jarg2) {
+SWIGEXPORT jlong JNICALL Java_com_github_jdablooms_cdabloomsJNI_new_1bitmap(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jlong jresult = 0 ;
-  int arg1 ;
-  size_t arg2 ;
+  size_t arg1 ;
   bitmap_t *result = 0 ;
   
   (void)jenv;
   (void)jcls;
-  arg1 = (int)jarg1; 
-  arg2 = (size_t)jarg2; 
-  result = (bitmap_t *)new_bitmap(arg1,arg2);
+  arg1 = (size_t)jarg1; 
+  result = (bitmap_t *)new_bitmap(arg1);
   *(bitmap_t **)&jresult = result; 
   return jresult;
 }
@@ -996,25 +966,18 @@ SWIGEXPORT jint JNICALL Java_com_github_jdablooms_cdabloomsJNI_free_1counting_1b
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_github_jdablooms_cdabloomsJNI_new_1counting_1bloom(JNIEnv *jenv, jclass jcls, jlong jarg1, jdouble jarg2, jstring jarg3) {
+SWIGEXPORT jlong JNICALL Java_com_github_jdablooms_cdabloomsJNI_new_1counting_1bloom(JNIEnv *jenv, jclass jcls, jlong jarg1, jdouble jarg2) {
   jlong jresult = 0 ;
   unsigned int arg1 ;
   double arg2 ;
-  char *arg3 = (char *) 0 ;
   counting_bloom_t *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   arg1 = (unsigned int)jarg1; 
   arg2 = (double)jarg2; 
-  arg3 = 0;
-  if (jarg3) {
-    arg3 = (char *)(*jenv)->GetStringUTFChars(jenv, jarg3, 0);
-    if (!arg3) return 0;
-  }
-  result = (counting_bloom_t *)new_counting_bloom(arg1,arg2,(char const *)arg3);
+  result = (counting_bloom_t *)new_counting_bloom(arg1,arg2);
   *(counting_bloom_t **)&jresult = result; 
-  if (arg3) (*jenv)->ReleaseStringUTFChars(jenv, jarg3, (const char *)arg3);
   return jresult;
 }
 
@@ -1468,25 +1431,18 @@ SWIGEXPORT void JNICALL Java_com_github_jdablooms_cdabloomsJNI_delete_1scaling_1
 }
 
 
-SWIGEXPORT jlong JNICALL Java_com_github_jdablooms_cdabloomsJNI_new_1scaling_1bloom(JNIEnv *jenv, jclass jcls, jlong jarg1, jdouble jarg2, jstring jarg3) {
+SWIGEXPORT jlong JNICALL Java_com_github_jdablooms_cdabloomsJNI_new_1scaling_1bloom(JNIEnv *jenv, jclass jcls, jlong jarg1, jdouble jarg2) {
   jlong jresult = 0 ;
   unsigned int arg1 ;
   double arg2 ;
-  char *arg3 = (char *) 0 ;
   scaling_bloom_t *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   arg1 = (unsigned int)jarg1; 
   arg2 = (double)jarg2; 
-  arg3 = 0;
-  if (jarg3) {
-    arg3 = (char *)(*jenv)->GetStringUTFChars(jenv, jarg3, 0);
-    if (!arg3) return 0;
-  }
-  result = (scaling_bloom_t *)new_scaling_bloom(arg1,arg2,(char const *)arg3);
+  result = (scaling_bloom_t *)new_scaling_bloom(arg1,arg2);
   *(scaling_bloom_t **)&jresult = result; 
-  if (arg3) (*jenv)->ReleaseStringUTFChars(jenv, jarg3, (const char *)arg3);
   return jresult;
 }
 

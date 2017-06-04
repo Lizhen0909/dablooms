@@ -43,14 +43,6 @@ public class bitmap_t {
     return cdabloomsJNI.bitmap_t_bytes_get(swigCPtr, this);
   }
 
-  public void setFd(int value) {
-    cdabloomsJNI.bitmap_t_fd_set(swigCPtr, this, value);
-  }
-
-  public int getFd() {
-    return cdabloomsJNI.bitmap_t_fd_get(swigCPtr, this);
-  }
-
   public void setArray(String value) {
     cdabloomsJNI.bitmap_t_array_set(swigCPtr, this, value);
   }

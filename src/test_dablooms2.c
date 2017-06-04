@@ -80,7 +80,7 @@ static void bloom_score(int positive, int should_positive, struct stats *stats, 
     }
 }
 
-int test_counting_remove_reopen(const char *bloom_file, const char *words_file)
+int test_counting_remove_reopen( const char *words_file)
 {
     FILE *fp;
     char word[256];
@@ -90,11 +90,8 @@ int test_counting_remove_reopen(const char *bloom_file, const char *words_file)
     
     printf("\n* test counting remove & reopen\n");
 
-    if ((fp = fopen(bloom_file, "r"))) {
-        fclose(fp);
-        remove(bloom_file);
-    }
-    if (!(bloom = new_counting_bloom(CAPACITY, ERROR_RATE, bloom_file))) {
+
+    if (!(bloom = new_counting_bloom(CAPACITY, ERROR_RATE ))) {
 
         fprintf(stderr, "ERROR: Could not create bloom filter\n");
         return TEST_FAIL;
@@ -117,9 +114,8 @@ int test_counting_remove_reopen(const char *bloom_file, const char *words_file)
         }
     }
     
-    free_counting_bloom(bloom);
-    bloom = new_counting_bloom_from_file(CAPACITY, ERROR_RATE, bloom_file);
     
+
     fseek(fp, 0, SEEK_SET);
     for (i = 0; (fgets(word, sizeof(word), fp)) && (i < CAPACITY); i++) {
         chomp_line(word);
@@ -139,7 +135,7 @@ int test_counting_remove_reopen(const char *bloom_file, const char *words_file)
     return print_results(&results);
 }
 
-int test_scaling_remove_reopen(const char *bloom_file, const char *words_file)
+int test_scaling_remove_reopen(  const char *words_file)
 {
     FILE *fp;
     char word[256];
@@ -149,11 +145,8 @@ int test_scaling_remove_reopen(const char *bloom_file, const char *words_file)
     
     printf("\n* test scaling remove & reopen\n");
     
-    if ((fp = fopen(bloom_file, "r"))) {
-        fclose(fp);
-        remove(bloom_file);
-    }
-    if (!(bloom = new_scaling_bloom(CAPACITY, ERROR_RATE, bloom_file))) {
+
+    if (!(bloom = new_scaling_bloom(CAPACITY, ERROR_RATE ))) {
 
         fprintf(stderr, "ERROR: Could not create bloom filter\n");
         return TEST_FAIL;
@@ -177,11 +170,8 @@ int test_scaling_remove_reopen(const char *bloom_file, const char *words_file)
         }
     }
     
-    bitmap_flush(bloom->bitmap);
-    free_scaling_bloom(bloom);
-    
-    bloom = new_scaling_bloom_from_file(CAPACITY, ERROR_RATE, bloom_file);
-    
+
+
     fseek(fp, 0, SEEK_SET);
     for (i = 0; fgets(word, sizeof(word), fp); i++) {
         chomp_line(word);
@@ -201,7 +191,7 @@ int test_scaling_remove_reopen(const char *bloom_file, const char *words_file)
     return print_results(&results);
 }
 
-int test_counting_accuracy(const char *bloom_file, const char *words_file)
+int test_counting_accuracy(  const char *words_file)
 {
     FILE *fp;
     char word[256];
@@ -211,11 +201,8 @@ int test_counting_accuracy(const char *bloom_file, const char *words_file)
     
     printf("\n* test counting accuracy\n");
     
-    if ((fp = fopen(bloom_file, "r"))) {
-        fclose(fp);
-        remove(bloom_file);
-    }
-     if (!(bloom = new_counting_bloom(CAPACITY, ERROR_RATE, bloom_file))) {
+
+     if (!(bloom = new_counting_bloom(CAPACITY, ERROR_RATE ))) {
 
         fprintf(stderr, "ERROR: Could not create bloom filter\n");
         return TEST_FAIL;
@@ -253,7 +240,7 @@ int test_counting_accuracy(const char *bloom_file, const char *words_file)
     return print_results(&results);
 }
 
-int test_scaling_accuracy(const char *bloom_file, const char *words_file)
+int test_scaling_accuracy(  const char *words_file)
 {
     FILE *fp;
     char word[256];
@@ -263,11 +250,8 @@ int test_scaling_accuracy(const char *bloom_file, const char *words_file)
     
     printf("\n* test scaling accuracy\n");
     
-    if ((fp = fopen(bloom_file, "r"))) {
-        fclose(fp);
-        remove(bloom_file);
-    }
-     if (!(bloom = new_scaling_bloom(CAPACITY, ERROR_RATE, bloom_file))) {
+
+     if (!(bloom = new_scaling_bloom(CAPACITY, ERROR_RATE ))) {
 
     	fprintf(stderr, "ERROR: Could not create bloom filter\n");
         return TEST_FAIL;
@@ -314,12 +298,12 @@ int main(int argc, char *argv[])
     int i;
     int failures = 0, warnings = 0;
     
-    if (argc != 3) {
-        fprintf(stderr, "Usage: %s <bloom_file> <words_file>\n", argv[0]);
+    if (argc != 2) {
+        fprintf(stderr, "Usage: %s  <words_file>\n", argv[0]);
         return EXIT_FAILURE;
     }
     
-    int (*tests[])(const char *, const char *) = {
+    int (*tests[])( const char *) = {
         test_counting_remove_reopen,
         test_counting_accuracy,
         test_scaling_remove_reopen,
@@ -327,7 +311,7 @@ int main(int argc, char *argv[])
         NULL,
     };
     for (i = 0; tests[i] != NULL;  i++) {
-        int result = (tests[i])(argv[1], argv[2]);
+        int result = (tests[i])(argv[1]);
         if (result == TEST_FAIL) {
             failures++;
         } else if (result == TEST_WARN) {

@@ -16,7 +16,7 @@ public class ScaleBloomFilter {
 	public ScaleBloomFilter(long expectedElements, double falsePositiveRate) {
 		ScaleBloomFilter.load_native();
 		this.filename = System.getProperty("java.io.tmpdir") + "/scale_bloom_" + UUID.randomUUID().toString();
-		this.filter = cdablooms.new_scaling_bloom(expectedElements, falsePositiveRate, filename);
+		this.filter = cdablooms.new_scaling_bloom(expectedElements, falsePositiveRate);
 	}
 
 	public void close() {

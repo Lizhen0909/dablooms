@@ -36,7 +36,11 @@ includedir = $(prefix)/include
 DESTDIR =
 BLDDIR = build
 
+ifdef USE_MEMORY_MAP
+CFLAGS = -g -Wall -O2 -DUSE_MEMORY_MAP
+else
 CFLAGS = -g -Wall -O2
+endif 
 LDFLAGS = 
 ALL_CFLAGS = -fPIC $(CFLAGS)
 ALL_LDFLAGS = -lm $(LDFLAGS)
@@ -68,9 +72,14 @@ SHARED_LDFLAGS = -shared -Wl,$(SO_CMD),libdablooms.$(SO_EXT_MAJOR)
 ### sources and outputs ###
 
 SRCS_LIBDABLOOMS = dablooms.c murmur.c
-SRCS_TESTS = test_dablooms.c
 
 OBJS_LIBDABLOOMS = $(patsubst %.c, $(BLDDIR)/%.o, $(SRCS_LIBDABLOOMS))
+
+ifdef USE_MEMORY_MAP
+SRCS_TESTS = test_dablooms.c
+else
+SRCS_TESTS = test_dablooms2.c
+endif 
 OBJS_TESTS = $(patsubst %.c, $(BLDDIR)/%.o, $(SRCS_TESTS))
 
 LIB_SYMLNKS = libdablooms.$(SO_NAME) libdablooms.$(SO_EXT_MAJOR)
@@ -137,8 +146,12 @@ $(BLDDIR)/test_dablooms: $(OBJS_TESTS) $(BLDDIR)/libdablooms.a
 	@$(CC) -o $@ $(ALL_CFLAGS) $(ALL_LDFLAGS) $(OBJS_TESTS) $(BLDDIR)/libdablooms.a -lm
 
 test: $(BLDDIR)/test_dablooms
+ifdef USE_MEMORY_MAP
 	@$(BLDDIR)/test_dablooms $(BLDDIR)/testbloom.bin $(WORDS)
-
+else
+	@$(BLDDIR)/test_dablooms $(WORDS)
+endif
+ 
 help:
 	@printf $(HELPTEXT)
 

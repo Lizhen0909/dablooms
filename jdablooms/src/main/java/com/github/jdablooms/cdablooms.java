@@ -22,8 +22,8 @@ public class cdablooms {
     return (cPtr == 0) ? null : new bitmap_t(cPtr, false);
   }
 
-  public static bitmap_t new_bitmap(int fd, long bytes) {
-    long cPtr = cdabloomsJNI.new_bitmap(fd, bytes);
+  public static bitmap_t new_bitmap(long bytes) {
+    long cPtr = cdabloomsJNI.new_bitmap(bytes);
     return (cPtr == 0) ? null : new bitmap_t(cPtr, false);
   }
 
@@ -51,8 +51,8 @@ public class cdablooms {
     return cdabloomsJNI.free_counting_bloom(counting_bloom_t.getCPtr(bloom), bloom);
   }
 
-  public static counting_bloom_t new_counting_bloom(long capacity, double error_rate, String filename) {
-    long cPtr = cdabloomsJNI.new_counting_bloom(capacity, error_rate, filename);
+  public static counting_bloom_t new_counting_bloom(long capacity, double error_rate) {
+    long cPtr = cdabloomsJNI.new_counting_bloom(capacity, error_rate);
     return (cPtr == 0) ? null : new counting_bloom_t(cPtr, false);
   }
 
@@ -73,8 +73,8 @@ public class cdablooms {
     return cdabloomsJNI.counting_bloom_check(counting_bloom_t.getCPtr(bloom), bloom, s, len);
   }
 
-  public static scaling_bloom_t new_scaling_bloom(long capacity, double error_rate, String filename) {
-    long cPtr = cdabloomsJNI.new_scaling_bloom(capacity, error_rate, filename);
+  public static scaling_bloom_t new_scaling_bloom(long capacity, double error_rate) {
+    long cPtr = cdabloomsJNI.new_scaling_bloom(capacity, error_rate);
     return (cPtr == 0) ? null : new scaling_bloom_t(cPtr, false);
   }
 

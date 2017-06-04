@@ -19,14 +19,12 @@ public class cdabloomsJNI {
   public final static native void delete_bytearray_t(long jarg1);
   public final static native void bitmap_t_bytes_set(long jarg1, bitmap_t jarg1_, long jarg2);
   public final static native long bitmap_t_bytes_get(long jarg1, bitmap_t jarg1_);
-  public final static native void bitmap_t_fd_set(long jarg1, bitmap_t jarg1_, int jarg2);
-  public final static native int bitmap_t_fd_get(long jarg1, bitmap_t jarg1_);
   public final static native void bitmap_t_array_set(long jarg1, bitmap_t jarg1_, String jarg2);
   public final static native String bitmap_t_array_get(long jarg1, bitmap_t jarg1_);
   public final static native long new_bitmap_t();
   public final static native void delete_bitmap_t(long jarg1);
   public final static native long bitmap_resize(long jarg1, bitmap_t jarg1_, long jarg2, long jarg3);
-  public final static native long new_bitmap(int jarg1, long jarg2);
+  public final static native long new_bitmap(long jarg1);
   public final static native int bitmap_increment(long jarg1, bitmap_t jarg1_, long jarg2, int jarg3);
   public final static native int bitmap_decrement(long jarg1, bitmap_t jarg1_, long jarg2, int jarg3);
   public final static native int bitmap_check(long jarg1, bitmap_t jarg1_, long jarg2, int jarg3);
@@ -63,7 +61,7 @@ public class cdabloomsJNI {
   public final static native long new_counting_bloom_t();
   public final static native void delete_counting_bloom_t(long jarg1);
   public final static native int free_counting_bloom(long jarg1, counting_bloom_t jarg1_);
-  public final static native long new_counting_bloom(long jarg1, double jarg2, String jarg3);
+  public final static native long new_counting_bloom(long jarg1, double jarg2);
   public final static native long new_counting_bloom_from_file(long jarg1, double jarg2, String jarg3);
   public final static native int counting_bloom_add(long jarg1, counting_bloom_t jarg1_, String jarg2, long jarg3);
   public final static native int counting_bloom_remove(long jarg1, counting_bloom_t jarg1_, String jarg2, long jarg3);
@@ -94,7 +92,7 @@ public class cdabloomsJNI {
   public final static native long scaling_bloom_t_bitmap_get(long jarg1, scaling_bloom_t jarg1_);
   public final static native long new_scaling_bloom_t();
   public final static native void delete_scaling_bloom_t(long jarg1);
-  public final static native long new_scaling_bloom(long jarg1, double jarg2, String jarg3);
+  public final static native long new_scaling_bloom(long jarg1, double jarg2);
   public final static native long new_scaling_bloom_from_file(long jarg1, double jarg2, String jarg3);
   public final static native int free_scaling_bloom(long jarg1, scaling_bloom_t jarg1_);
   public final static native int scaling_bloom_count(long jarg1, scaling_bloom_t jarg1_);
