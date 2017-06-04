@@ -28,10 +28,10 @@ const char *dablooms_version(void)
 
 void free_bitmap(bitmap_t *bitmap)
 {
+#ifdef USE_MEMORY_MAP
     if ((munmap(bitmap->array, bitmap->bytes)) < 0) {
         perror("Error, unmapping memory");
     }
-#ifdef USE_MEMORY_MAP
     close(bitmap->fd);
 #endif
     free(bitmap);
@@ -195,12 +195,16 @@ int bitmap_check(bitmap_t *bitmap, unsigned int index, long offset)
 
 int bitmap_flush(bitmap_t *bitmap)
 {
+#ifdef USE_MEMORY_MAP
     if ((msync(bitmap->array, bitmap->bytes, MS_SYNC) < 0)) {
         perror("Error, flushing bitmap to disk");
         return -1;
     } else {
         return 0;
     }
+#else
+	return 0;
+#endif 
 }
 
 /*
